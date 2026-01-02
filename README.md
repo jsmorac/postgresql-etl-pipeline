@@ -1,9 +1,9 @@
-# Data Engineer Technical Assessment -- VIP Medical Group
+# Healthcare ETL Pipeline (PostgreSQL)
 
-This repository contains a data engineering solution developed as part
-of a technical assessment. The objective is to ingest, clean, and load
-healthcare-related data into a PostgreSQL database following good
+This repository contains a data engineering solution to ingest, clean, 
+and load healthcare-related data into a PostgreSQL database following good 
 engineering practices.
+
 
 ------------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ findings and design decisions prior to building the ETL pipeline.
 
 ## Project Structure
 
-    RedValley/
+    PostgreSQL-ETL/
     │
     ├── data/
     │   ├── raw/              # Original Excel files
@@ -59,47 +59,10 @@ Both datasets are located in the data/raw/ directory.
 
 ------------------------------------------------------------------------
 
-## Data Exploration
-
-An exploratory analysis was performed before building the ETL pipeline.
-See: `notebooks/01_data_exploration.ipynb`
-
-### Key findings:
-
--   Non-numeric values were found in `booking_id` (e.g., '37X')
--   Appointment status values were inconsistent (e.g., confirmed,
-    Confirmed, confirmed.)
--   One `doctor_id` referenced in appointments does not exist in the
-    doctors dataset
--   A significant number of `booking_date` values were invalid or
-    inconsistent
--   No duplicated rows were found in either dataset
-
-These findings directly informed the transformation logic implemented in
-the ETL pipeline.
-
-------------------------------------------------------------------------
-
 ## ETL Pipeline
-
-### Extract
-
--   Raw Excel files are read using pandas
-
-### Transform
-
--   Invalid `booking_id` values coerced and removed
--   Appointment status values are normalized
--   Dates are parsed safely (`errors='coerce'`)
--   Nullable fields are handled explicitly
--   Referential integrity enforced (appointments with invalid doctor_id dropped)
--   Data quality issues are logged for transparency
-
-### Load
-
--   Cleaned data is loaded into a local `PostgreSQL` database using
-    `SQLAlchemy`
--   Tables are created in the `healthtech` schema using `to_sql`
+- **Extract:** Raw Excel files are read using pandas.
+- **Transform:** Invalid booking_id removed, appointment status normalized, dates parsed safely, referential integrity enforced, data quality issues logged.
+- **Load:** Cleaned data loaded into PostgreSQL using SQLAlchemy (schema: `healthtech`).
 
 ------------------------------------------------------------------------
 
@@ -139,16 +102,13 @@ Logs will be printed to the console during execution.
 
 ## Database Credentials
 
-For simplicity in this technical assessment, default credentials are hardcoded in src/config.py:
+Database credentials are loaded from environment variables for security:
 
-- host: localhost
-- port: 5432
-- dbname: postgres
-- user: postgres
-- password: sebastian7
-
-In production environments, credentials should never be hardcoded.
-Instead, they should be set via environment variables or a secrets manager.
+- `DB_HOST`
+- `DB_PORT`
+- `DB_NAME`
+- `DB_USER`
+- `DB_PASSWORD`
 
 ------------------------------------------------------------------------
 
@@ -163,32 +123,14 @@ To execute:
 4. 	Run them to see results
 
 ------------------------------------------------------------------------
-
-## Design Considerations
-
--   ETL implemented in Python scripts for reproducibility
--   Notebook used only for exploration/documentation
--   Logging tracks data quality issues instead of failing pipeline
--   Solution prioritizes clarity, robustness, and maintainability
-
-------------------------------------------------------------------------
 ## AWS Architecture Proposal
 
-In production, the ETL pipeline would use AWS managed services:
+In production, the ETL pipeline could use AWS managed services:
 
-### Extract
-- **Amazon S3**: store raw file
-
-### Transform
-- **AWS Glue**: clean and transform data
-
-### Load
-- **Amazon RDS (PostgreSQL)**: store transformed data
-
-### Orchestration
-- **AWS Step Functions** or **Amazon Managed Airflow**: orchestrate workflow
-
-This ensures scalability, security, and maintainability.
+- Extract: Amazon S3
+- Transform: AWS Glue
+- Load: Amazon RDS (PostgreSQL)
+- Orchestration: AWS Step Functions or Amazon Managed Airflow
 
 ------------------------------------------------------------------------
 ## Potential Improvements

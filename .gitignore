@@ -1,18 +1,28 @@
-# Ignore virtual environment
+# Virtual environment
 venv/
+.env
 
-# Ignore logs
+# Logs
 logs/
 
-# Ignore Python cache files
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Ignore Jupyter notebook checkpoints
+# Jupyter notebook checkpoints
 .ipynb_checkpoints/
 
-# Ignore system files
+# System files
 .DS_Store
 Thumbs.db
+
+# VSCode / IDE configs
+.vscode/
+.idea/
+
+# Build / packaging
+*.egg-info/
+dist/
+build/

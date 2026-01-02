@@ -2,3 +2,5 @@ pandas
 openpyxl
 psycopg2-binary==2.9.9
 SQLAlchemy==2.0.32
+python-dotenv
+jupyter      
