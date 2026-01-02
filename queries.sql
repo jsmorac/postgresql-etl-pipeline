@@ -1,3 +1,4 @@
+-- Queries for healthcare appointments analysis
 -- 1. Which doctor has the most confirmed appointments?
 SELECT doctor_id, COUNT(*) AS confirmed_count
 FROM healthtech.appointments
